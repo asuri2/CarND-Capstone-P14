@@ -1,3 +1,7 @@
+from pid import PID
+from lowpass import LowPassFilter
+from yaw_controller import YawController
+import rospy
 
 GAS_DENSITY = 2.858
 ONE_MPH = 0.44704
@@ -16,7 +20,7 @@ class Controller(object):
         mx = 0.2	# max throttle value
         self.throttle_controller = PID(kp, ki, kd, mn, mx)
 
-        tau = 0.5	# cutoff frequency = 1/(2pi*tau)
+        tau = 0.5	# 1/(2pi*tau) = cutoff frequency
         ts = 0.02 	# sample time
         self.vel_lpf = LowPassFilter(tau, ts)
 
@@ -59,3 +63,4 @@ class Controller(object):
         	brake = abs(decel)*self.vehicle_mass*self.wheel_radius	# Torque N*m
 
         return throttle, brake, steering
+        
